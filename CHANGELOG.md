@@ -2,6 +2,65 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.287.0](https://github.com/bigcommerce/checkout-js/compare/v1.286.11...v1.287.0) (2023-02-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7255 Remove checkout step numbers ([#1186](https://github.com/bigcommerce/checkout-js/issues/1186)) ([1c3a999](https://github.com/bigcommerce/checkout-js/commit/1c3a9992f40d6e65214d5ad4ef1719aa816d1136))
+
+### [1.286.11](https://github.com/bigcommerce/checkout-js/compare/v1.286.10...v1.286.11) (2023-02-07)
+
+### [1.286.10](https://github.com/bigcommerce/checkout-js/compare/v1.286.9...v1.286.10) (2023-02-06)
+
+### [1.286.9](https://github.com/bigcommerce/checkout-js/compare/v1.286.8...v1.286.9) (2023-02-02)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-1785 change button name to Complete Order on last step ([995feb2](https://github.com/bigcommerce/checkout-js/commit/995feb238c05ed6cd0f8c24595e132ac01386e58))
+* **payment:** PAYPAL-1915 add isCheckoutPaymentMethod to PaymentForm ([d9e19f2](https://github.com/bigcommerce/checkout-js/commit/d9e19f265693773261b0b2152671b5bcb76cca11))
+
+### [1.286.8](https://github.com/bigcommerce/checkout-js/compare/v1.286.7...v1.286.8) (2023-02-02)
+
+### [1.286.7](https://github.com/bigcommerce/checkout-js/compare/v1.286.6...v1.286.7) (2023-02-02)
+
+### [1.286.6](https://github.com/bigcommerce/checkout-js/compare/v1.286.5...v1.286.6) (2023-01-31)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-000 Fix lint issues ([#1180](https://github.com/bigcommerce/checkout-js/issues/1180)) ([9ad4e5c](https://github.com/bigcommerce/checkout-js/commit/9ad4e5c31a0a2be69d6d4343577980db8edae57a))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-6434 Build hosted credit card package ([#1146](https://github.com/bigcommerce/checkout-js/issues/1146)) ([37faa66](https://github.com/bigcommerce/checkout-js/commit/37faa664baab546b9ca76d7f59b87d602086ac8b))
+
+### [1.286.5](https://github.com/bigcommerce/checkout-js/compare/v1.286.4...v1.286.5) (2023-01-31)
+
+### [1.286.4](https://github.com/bigcommerce/checkout-js/compare/v1.286.3...v1.286.4) (2023-01-30)
+
+### [1.286.3](https://github.com/bigcommerce/checkout-js/compare/v1.286.2...v1.286.3) (2023-01-29)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-6437 Build HostedDropIn component package ([#1158](https://github.com/bigcommerce/checkout-js/issues/1158)) ([b46bc5e](https://github.com/bigcommerce/checkout-js/commit/b46bc5e9bc48f31b5db895d2fd81ca48a9a95070))
+
+### [1.286.2](https://github.com/bigcommerce/checkout-js/compare/v1.286.1...v1.286.2) (2023-01-27)
+
+### [1.286.1](https://github.com/bigcommerce/checkout-js/compare/v1.286.0...v1.286.1) (2023-01-25)
+
+## [1.286.0](https://github.com/bigcommerce/checkout-js/compare/v1.285.2...v1.286.0) (2023-01-25)
+
+
+### Features
+
+* **payment:** PAYPAL-1840 Create braintreepaypalcredit customer button strategy ([e6bfdad](https://github.com/bigcommerce/checkout-js/commit/e6bfdadfb5d2222f89a0301deb44f8a464f6579e))
+
+### [1.285.2](https://github.com/bigcommerce/checkout-js/compare/v1.285.1...v1.285.2) (2023-01-20)
+
 ### [1.285.1](https://github.com/bigcommerce/checkout-js/compare/v1.285.0...v1.285.1) (2023-01-19)
 
 ## [1.285.0](https://github.com/bigcommerce/checkout-js/compare/v1.284.2...v1.285.0) (2023-01-19)
