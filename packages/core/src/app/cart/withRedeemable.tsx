@@ -17,6 +17,7 @@ export default function withRedeemable(
             headerLink,
             onRemovedCoupon,
             onRemovedGiftCertificate,
+            applyGiftCertificate,
             storeCreditAmount,
             ...redeemableProps
         } = props;
@@ -30,9 +31,11 @@ export default function withRedeemable(
                             ...redeemableProps,
                             onRemovedCoupon,
                             onRemovedGiftCertificate,
+                            applyGiftCertificate
                         }}
                     />
                 }
+                applyGiftCertificate={applyGiftCertificate}
                 headerLink={headerLink}
                 lineItems={checkout.cart.lineItems}
                 onRemovedCoupon={onRemovedCoupon}
