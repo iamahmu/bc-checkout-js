@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 interface EnvConfig {
     nextApiURL: string;
     rewardEntityId: number
@@ -11,15 +9,14 @@ const dev: EnvConfig = {
 }
 
 const useEnvVariables = () => {
-    const [ envConfig ] = useState<EnvConfig>(dev);
+    let envConfig: EnvConfig = dev;
 
-    // TODO: process.env. is not working
-    // useEffect(() => {
-    //     setEnvConfig({
-    //         nextApiURL: process.env.NX_NEXT_API_URL as string || '',
-    //         rewardEntityId: parseInt(process.env.NX_REWARD_ENTITY_ID as string || '41', 10)
-    //     })
-    // }, []);
+    if(process.env) {
+        envConfig = {
+            nextApiURL: process.env.CL_NEXT_API_URL as string || dev.nextApiURL,
+            rewardEntityId: parseInt((process.env.CL_REWARD_ENTITY_ID || dev.rewardEntityId) as string, 10)
+        }
+    }
 
     return { envConfig };
 };
