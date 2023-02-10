@@ -1,5 +1,7 @@
 import { CheckoutSelectors, LineItemMap, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FunctionComponent, ReactNode, useMemo } from 'react';
+
+import { useFetchLoyaltyPoints } from '../cl-custom-checkout-helper';
 
 import OrderSummaryHeader from './OrderSummaryHeader';
 import OrderSummaryItems from './OrderSummaryItems';
@@ -7,20 +9,6 @@ import OrderSummarySection from './OrderSummarySection';
 import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import OrderSummaryTotal from './OrderSummaryTotal';
 import removeBundledItems from './removeBundledItems';
-
-interface Stencil_Graphql {
-  channel_id: string;
-  store_hash: string;
-  storefront_api: any
-}
-
-interface Balance {
-  available: number
-}
-
-interface Reward {
-  balance?: Balance | null;
-}
 
 export interface OrderSummaryProps {
     lineItems: LineItemMap;
@@ -41,70 +29,9 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     total,
     ...orderSummarySubtotalsProps
 }) => {
-    const [loyaltiPoints, setLoyaltyPoints] = useState<Reward>();
     const { applyGiftCertificate } = orderSummarySubtotalsProps;
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
-
-    const loadLoyaltyPoints = useCallback(() => {
-      const session_data = sessionStorage.getItem("stencil_graphql");
-      let stencil_graphql:Stencil_Graphql;
-
-      if(session_data)
-        stencil_graphql = JSON.parse(session_data);
-      else 
-        return;
-
-      if(stencil_graphql.storefront_api) {
-        const graphql = JSON.stringify({
-          query: `
-            {
-              customer {
-                attributes {
-                  attribute(entityId: 41) {
-                    name
-                    value
-                  }
-                }
-              }
-          }`,
-          variables: {}
-        });
-        const requestOptions = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'credentials': 'include',
-            "Authorization": `Bearer ${stencil_graphql?.storefront_api}`
-          },
-          body: graphql
-        };
-  
-        fetch("/graphql", requestOptions)
-        .then(response => response.json())
-        .then(result => {
-
-          if(result.data?.customer) {
-            const { data : {
-              customer : {
-                attributes : {
-                  attribute
-                }
-              }
-            }} = result;
-
-            if(attribute?.value) {
-              const parsedLoyaltyData: Reward = JSON.parse(attribute?.value);
-
-              setLoyaltyPoints(parsedLoyaltyData);
-            }
-          }
-        }).catch(error => console.log('error', error));
-      }
-    }, []);
-
-    useEffect(() => {
-      loadLoyaltyPoints();
-    }, []);
+    const [ loyaltiPoints ] = useFetchLoyaltyPoints();
 
     return (
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
@@ -119,7 +46,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                 {additionalLineItems}
             </OrderSummarySection>
 
-            {loyaltiPoints?.balance?.available && (
+            {loyaltiPoints?.balance?.available && applyGiftCertificate && (
               <OrderSummarySection>
                 <div className='reward-section'>
                   <h3 className="loyalty-discount optimizedCheckout-headingSecondary">
@@ -129,9 +56,8 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                     <span className='cart-priceItem-value'>{loyaltiPoints?.balance?.available}</span> off available.
                     <a
                       onClick={() => {
-                        if (applyGiftCertificate) {
-                          applyGiftCertificate('2Z1-IRS-A51-J3T');
-                        }
+                        // TODO: need to change this code when we will be having loyalty claim API ready
+                        applyGiftCertificate('2Z1-IRS-A51-J3T');
                       }}
                     >
                       Click here to apply to your order
