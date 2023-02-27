@@ -39,6 +39,7 @@ export interface CustomerProps {
     step: CheckoutStepStatus;
     isEmbedded?: boolean;
     isSubscribed: boolean;
+    isWalletButtonsOnTop: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     onChangeViewType?(viewType: CustomerViewType): void;
     onAccountCreated?(): void;
@@ -116,7 +117,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
         this.draftEmail = email;
 
         try {
-            if (providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
+            if (providerWithCustomCheckout && providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
                 await initializeCustomer({methodId: providerWithCustomCheckout});
             }
         } catch (error) {
@@ -171,6 +172,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isExecutingPaymentMethodCheckout = false,
             isInitializing = false,
             isSubscribed,
+            isWalletButtonsOnTop,
             privacyPolicyUrl,
             requiresMarketingConsent,
             providerWithCustomCheckout,
@@ -178,21 +180,26 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             step,
             useFloatingLabel,
         } = this.props;
+        const checkoutButtons = isWalletButtonsOnTop
+          ? null
+          : <CheckoutButtonList
+            checkEmbeddedSupport={checkEmbeddedSupport}
+            deinitialize={deinitializeCustomer}
+            initialize={initializeCustomer}
+            isInitializing={isInitializing}
+            methodIds={checkoutButtonIds}
+            onError={onUnhandledError}
+          />;
+
+        const isLoadingGuestForm = isWalletButtonsOnTop ?
+            isContinuingAsGuest :
+            isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout;
 
         return (
             providerWithCustomCheckout === PaymentMethodId.StripeUPE ?
                 <StripeGuestForm
                     canSubscribe={canSubscribe}
-                    checkoutButtons={
-                        <CheckoutButtonList
-                            checkEmbeddedSupport={checkEmbeddedSupport}
-                            deinitialize={deinitializeCustomer}
-                            initialize={initializeCustomer}
-                            isInitializing={isInitializing}
-                            methodIds={checkoutButtonIds}
-                            onError={onUnhandledError}
-                        />
-                    }
+                    checkoutButtons={checkoutButtons}
                     continueAsGuestButtonLabelId="customer.continue"
                     defaultShouldSubscribe={isSubscribed}
                     deinitialize={deinitializeCustomer}
@@ -209,22 +216,11 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 :
             <GuestForm
                 canSubscribe={canSubscribe}
-                checkoutButtons={
-                    <CheckoutButtonList
-                        checkEmbeddedSupport={checkEmbeddedSupport}
-                        deinitialize={deinitializeCustomer}
-                        initialize={initializeCustomer}
-                        isInitializing={isInitializing}
-                        methodIds={checkoutButtonIds}
-                        onError={onUnhandledError}
-                    />
-                }
+                checkoutButtons={checkoutButtons}
                 continueAsGuestButtonLabelId="customer.continue"
                 defaultShouldSubscribe={isSubscribed}
                 email={this.draftEmail || email}
-                isLoading={
-                    isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout
-                }
+                isLoading={isLoadingGuestForm}
                 onChangeEmail={this.handleChangeEmail}
                 onContinueAsGuest={this.handleContinueAsGuest}
                 onShowLogin={this.handleShowLogin}
@@ -471,6 +467,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
     private handleChangeEmail: (email: string) => void = (email) => {
         const { analyticsTracker } = this.props;
+
         this.draftEmail = email;
         analyticsTracker.customerEmailEntry(email);
     };
@@ -501,6 +498,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
     private checkoutPaymentMethodExecuted(payload?: CheckoutPaymentMethodExecutedOptions) {
         const { analyticsTracker } = this.props;
+
         analyticsTracker.customerPaymentMethodExecuted(payload);
     }
 }

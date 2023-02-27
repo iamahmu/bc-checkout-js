@@ -16,7 +16,7 @@ import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
-import { AddressFormSkeleton, ChecklistSkeleton, CustomerSkeleton } from '@bigcommerce/checkout/ui';
+import { AddressFormSkeleton, ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
 import { StaticBillingAddress } from '../billing';
@@ -24,7 +24,9 @@ import { EmptyCartMessage } from '../cart';
 import { CustomError, ErrorLogger, ErrorModal, isCustomError } from '../common/error';
 import { retry } from '../common/utility';
 import {
+    CheckoutButtonContainer,
     CheckoutSuggestion,
+    Customer,
     CustomerInfo,
     CustomerSignOutEvent,
     CustomerViewType,
@@ -75,16 +77,6 @@ const CartSummaryDrawer = lazy(() =>
     ),
 );
 
-const Customer = lazy(() =>
-    retry(
-        () =>
-            import(
-                /* webpackChunkName: "customer" */
-                '../customer/Customer'
-            ),
-    ),
-);
-
 const Payment = lazy(() =>
     retry(
         () =>
@@ -127,6 +119,7 @@ export interface CheckoutState {
     hasSelectedShippingOptions: boolean;
     isBuyNowCartEnabled: boolean;
     isHidingStepNumbers: boolean;
+    isWalletButtonsOnTop: boolean;
     isSubscribed: boolean;
 }
 
@@ -164,6 +157,7 @@ class Checkout extends Component<
         hasSelectedShippingOptions: false,
         isBuyNowCartEnabled: false,
         isHidingStepNumbers: true,
+        isWalletButtonsOnTop: false,
         isSubscribed: false,
     };
 
@@ -243,6 +237,10 @@ class Checkout extends Component<
             const removeStepNumbersFlag =
               data.getConfig()?.checkoutSettings.features['CHECKOUT-7255.remove_checkout_step_numbers'] ??
               false;
+            const walletButtonsOnTopFlag =
+              (data.getConfig()?.checkoutSettings.features['CHECKOUT-7222.checkout_settings_styling_section'] &&
+              data.getUserExperienceSettings()?.walletButtonsOnTop) ??
+              false;
             const defaultNewsletterSignupOption =
                 data.getConfig()?.shopperConfig.defaultNewsletterSignup ??
                 false;
@@ -257,6 +255,7 @@ class Checkout extends Component<
                 isBuyNowCartEnabled: buyNowCartFlag,
                 isHidingStepNumbers: removeStepNumbersFlag,
                 isSubscribed: defaultNewsletterSignupOption,
+                isWalletButtonsOnTop: walletButtonsOnTopFlag,
             });
 
             if (isMultiShippingMode) {
@@ -304,7 +303,7 @@ class Checkout extends Component<
     private renderContent(): ReactNode {
         const { isPending, loginUrl, promotions = [], steps } = this.props;
 
-        const { activeStepType, defaultStepType, isCartEmpty, isRedirecting } = this.state;
+        const { activeStepType, defaultStepType, isCartEmpty, isRedirecting, isWalletButtonsOnTop } = this.state;
 
         if (isCartEmpty) {
             return <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />;
@@ -316,6 +315,11 @@ class Checkout extends Component<
                     <LoadingNotification isLoading={isPending} />
 
                     <PromotionBannerList promotions={promotions} />
+
+                    {isWalletButtonsOnTop && <CheckoutButtonContainer
+                        checkEmbeddedSupport={this.checkEmbeddedSupport}
+                        onUnhandledError={this.handleUnhandledError}
+                    />}
 
                     <ol className="checkout-steps">
                         {steps
@@ -361,6 +365,7 @@ class Checkout extends Component<
         const {
             customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
             isSubscribed,
+            isWalletButtonsOnTop,
         } = this.state;
 
         return (
@@ -378,24 +383,23 @@ class Checkout extends Component<
                     />
                 }
             >
-                <LazyContainer loadingSkeleton={<CustomerSkeleton />}>
-                    <Customer
-                        checkEmbeddedSupport={this.checkEmbeddedSupport}
-                        isEmbedded={isEmbedded()}
-                        isSubscribed={isSubscribed}
-                        onAccountCreated={this.navigateToNextIncompleteStep}
-                        onChangeViewType={this.setCustomerViewType}
-                        onContinueAsGuest={this.navigateToNextIncompleteStep}
-                        onContinueAsGuestError={this.handleError}
-                        onReady={this.handleReady}
-                        onSignIn={this.navigateToNextIncompleteStep}
-                        onSignInError={this.handleError}
-                        onSubscribeToNewsletter={this.handleNewsletterSubscription}
-                        onUnhandledError={this.handleUnhandledError}
-                        step={step}
-                        viewType={customerViewType}
-                    />
-                </LazyContainer>
+                <Customer
+                    checkEmbeddedSupport={this.checkEmbeddedSupport}
+                    isEmbedded={isEmbedded()}
+                    isSubscribed={isSubscribed}
+                    isWalletButtonsOnTop = {isWalletButtonsOnTop}
+                    onAccountCreated={this.navigateToNextIncompleteStep}
+                    onChangeViewType={this.setCustomerViewType}
+                    onContinueAsGuest={this.navigateToNextIncompleteStep}
+                    onContinueAsGuestError={this.handleError}
+                    onReady={this.handleReady}
+                    onSignIn={this.navigateToNextIncompleteStep}
+                    onSignInError={this.handleError}
+                    onSubscribeToNewsletter={this.handleNewsletterSubscription}
+                    onUnhandledError={this.handleUnhandledError}
+                    step={step}
+                    viewType={customerViewType}
+                />
             </CheckoutStep>
         );
     }
@@ -628,6 +632,7 @@ class Checkout extends Component<
 
     private handleExpanded: (type: CheckoutStepType) => void = (type) => {
         const { analyticsTracker } = this.props;
+
         analyticsTracker.trackStepViewed(type);
     };
 
