@@ -2,6 +2,85 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.295.0](https://github.com/bigcommerce/checkout-js/compare/v1.294.0...v1.295.0) (2023-02-27)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#1215](https://github.com/bigcommerce/checkout-js/issues/1215)) ([7d5cc72](https://github.com/bigcommerce/checkout-js/commit/7d5cc7244d45818d02412abab50300389b984821))
+
+## [1.294.0](https://github.com/bigcommerce/checkout-js/compare/v1.293.0...v1.294.0) (2023-02-24)
+
+
+### Features
+
+* **other:** CHECKOUT-000 Change commit vlidation rule ([#1211](https://github.com/bigcommerce/checkout-js/issues/1211)) ([372062b](https://github.com/bigcommerce/checkout-js/commit/372062b55cad36964ca5b85ff64c9f99f2663a42))
+* **payment:** STRIPE-200 add phone number for stripe link ([#1100](https://github.com/bigcommerce/checkout-js/issues/1100)) ([29f17be](https://github.com/bigcommerce/checkout-js/commit/29f17be0570e6d98d2ab9f515fc79114f0053380))
+
+## [1.293.0](https://github.com/bigcommerce/checkout-js/compare/v1.292.1...v1.293.0) (2023-02-22)
+
+
+### Features
+
+* **common:** CHECKOUT-7234 Remove loading for customer guest form ([#1204](https://github.com/bigcommerce/checkout-js/issues/1204)) ([5a8f1ec](https://github.com/bigcommerce/checkout-js/commit/5a8f1ece2d4e07b807a26a0028a11d1c3fd17cdb))
+
+### [1.292.1](https://github.com/bigcommerce/checkout-js/compare/v1.292.0...v1.292.1) (2023-02-21)
+
+
+### Bug Fixes
+
+* **payment:** INT-7522 SquareV2: Disable submit only if payment data is required ([4eeabd7](https://github.com/bigcommerce/checkout-js/commit/4eeabd7d0abf312ad0754a261616f6fde90aebfe))
+
+## [1.292.0](https://github.com/bigcommerce/checkout-js/compare/v1.291.4...v1.292.0) (2023-02-21)
+
+
+### Features
+
+* **payment:** PAYMENTS-8493 check untrustedCardVerificationMode before generating card code and card number component ([a8992b2](https://github.com/bigcommerce/checkout-js/commit/a8992b21c04a7d464eb91cd1bb5187735859c20c))
+
+### [1.291.4](https://github.com/bigcommerce/checkout-js/compare/v1.291.3...v1.291.4) (2023-02-20)
+
+### [1.291.3](https://github.com/bigcommerce/checkout-js/compare/v1.291.2...v1.291.3) (2023-02-17)
+
+### [1.291.2](https://github.com/bigcommerce/checkout-js/compare/v1.291.1...v1.291.2) (2023-02-17)
+
+### [1.291.1](https://github.com/bigcommerce/checkout-js/compare/v1.291.0...v1.291.1) (2023-02-15)
+
+## [1.291.0](https://github.com/bigcommerce/checkout-js/compare/v1.290.0...v1.291.0) (2023-02-14)
+
+
+### Features
+
+* **payment:** STRIPE-280 change type of skeleton for stripeGuestForm ([653780d](https://github.com/bigcommerce/checkout-js/commit/653780d1fc2e267e0a7c5edaef45ff50163351e4))
+* **payment:** STRIPE-280 pengs feedback ([7ef5929](https://github.com/bigcommerce/checkout-js/commit/7ef59292643b71df839389cd7714806502712814))
+* **payment:** STRIPE-280 using addressFormSkeleton instead spinner for stripeLink components ([32a2636](https://github.com/bigcommerce/checkout-js/commit/32a2636d5603e068b11cfabbaa1ac219589bdd3e))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-7291 Add ApplePay button style ([#1196](https://github.com/bigcommerce/checkout-js/issues/1196)) ([dd1216d](https://github.com/bigcommerce/checkout-js/commit/dd1216d348d2b044c8afdb348c8c8d3b9b3cfd98))
+
+## [1.290.0](https://github.com/bigcommerce/checkout-js/compare/v1.289.0...v1.290.0) (2023-02-13)
+
+
+### Features
+
+* **payment:** PAYPAL-1837 Create paypalcommercecredit customer button strategy ([6e37a5b](https://github.com/bigcommerce/checkout-js/commit/6e37a5b16a47379733ff54e5434ff4bb41a9604e))
+
+## [1.289.0](https://github.com/bigcommerce/checkout-js/compare/v1.288.0...v1.289.0) (2023-02-13)
+
+
+### Features
+
+* **payment:** PAYPAL-1838 Create paypalcommercevenmo customer button strategy ([f833d98](https://github.com/bigcommerce/checkout-js/commit/f833d9810253ff586c35f3a90db14e797fb76684))
+
+## [1.288.0](https://github.com/bigcommerce/checkout-js/compare/v1.287.0...v1.288.0) (2023-02-12)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7231 Display wallet buttons at top of checkout ([#1192](https://github.com/bigcommerce/checkout-js/issues/1192)) ([5d709e4](https://github.com/bigcommerce/checkout-js/commit/5d709e4fce7c3ff5fb6088e409d0534f3779fe20))
+
 ## [1.287.0](https://github.com/bigcommerce/checkout-js/compare/v1.286.11...v1.287.0) (2023-02-08)
 
 
