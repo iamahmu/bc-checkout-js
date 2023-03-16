@@ -1,3 +1,4 @@
+const dotenv = require('dotenv');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const EventEmitter = require('events');
 const { copyFileSync } = require('fs');
@@ -108,6 +109,9 @@ function appConfig(options, argv) {
                     library: LIBRARY_NAME,
                 },
                 plugins: [
+                    new DefinePlugin({
+                        'process.env': JSON.stringify(dotenv.config().parsed)
+                    }),
                     new StyleLintPlugin({
                         fix: !isProduction,
                         cache: true,
